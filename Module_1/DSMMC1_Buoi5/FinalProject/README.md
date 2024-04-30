@@ -18,14 +18,14 @@ This Python script grades multiple exam papers and generates individual grade fi
 
 project/
 │
-├── DataFiles/ # Directory containing input data files
-│ ├── class1.txt
-│ ├── class2.txt
-│ └── ...
+├── DataFiles/                       # Directory containing input data files
+│   ├── class1.txt
+│   ├── class2.txt
+│   └── ...
 │
-├── __MACOSX/DataFiles/ExpectedOutput # Directory containing output grade files
-│ ├── class1_grades.txt
-│ ├── class2_grades.txt
-│ └── ...
-├── grade_the_exams.py # Main script to grade exams
-└── README.md # Instructions on how to use the project
+├── __MACOSX/DataFiles/ExpectedOutput  # Directory containing output grade files
+│   ├── class1_grades.txt
+│   ├── class2_grades.txt
+│   └── ...
+├── grade_the_exams.py               # Main script to grade exams
+└── README.md                        # Instructions on how to use the project
