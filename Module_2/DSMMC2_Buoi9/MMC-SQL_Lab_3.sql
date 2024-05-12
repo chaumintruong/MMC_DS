@@ -103,7 +103,7 @@ SELECT * FROM Department;
 SELECT DepartmentID FROM Department WHERE DepartmentName = 'Sale';
 
 -- Question 4: lấy ra thông tin account có full name dài nhất
-SELECT * FROM Account ORDER BY LENGTH(FullName) DESC LIMIT 1;
+SELECT * FROM Account WHERE LENGTH(FullName) = MAX(LENGTH(FullName));
 
 -- Question 5: Lấy ra thông tin account có full name dài nhất và thuộc phòng ban có id = 3
 SELECT * FROM Account WHERE DepartmentID = 3 ORDER BY LENGTH(FullName) DESC LIMIT 1;

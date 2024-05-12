@@ -1,4 +1,4 @@
-Question 1: Tối ưu lại cấu trúc database
+-- Question 1: Tối ưu lại cấu trúc database
 
 -- Tạo Database IF NOT EXISTS
 CREATE DATABASE IF NOT EXISTS Testing_System_Db;
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Account (
     PositionID INT,
     CreateDate DATE,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-    FOREIGN KEY (PositionID) REFERENCES Position(PositionID)
+    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID)
 );
 
 -- Tạo bảng Group
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS ExamQuestion (
     FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID)
 );
 
-Question 2: Thêm ràng buộc vào các database
+-- Question 2: Thêm ràng buộc vào các database
 
 -- Tạo Database IF NOT EXISTS
 CREATE DATABASE IF NOT EXISTS Testing_System_Db;
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS Account (
     PositionID INT,
     CreateDate DATE,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-    FOREIGN KEY (PositionID) REFERENCES Position(PositionID)
+    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID)
 );
 
 -- Tạo bảng Group
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS ExamQuestion (
 );
 
 
-Question 3: 
+-- Question 3: 
 
 -- Chèn dữ liệu vào bảng Department
 INSERT INTO Department(DepartmentID, DepartmentName)
@@ -230,18 +230,12 @@ VALUES
 (10, N'Bán hàng');
 
 -- Chèn dữ liệu vào bảng Position
-INSERT INTO Position(PositionID, PositionName)
+INSERT INTO `Position`(PositionID, PositionName)
 VALUES 
 (1, N'Dev'),
 (2, N'Test'),
 (3, N'Scrum Master'),
 (4, N'PM');
-
--- Chèn dữ liệu vào bảng TypeQuestion
-INSERT INTO TypeQuestion(TypeID, TypeName)
-VALUES 
-(1, N'Essay'),
-(2, N'Multiple-Choice');
 
 -- Chèn dữ liệu vào bảng CategoryQuestion
 INSERT INTO CategoryQuestion(CategoryID, CategoryName)

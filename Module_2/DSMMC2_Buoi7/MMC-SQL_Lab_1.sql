@@ -26,11 +26,11 @@ CREATE TABLE IF NOT EXISTS Account (
     PositionID INT,
     CreateDate DATE,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-    FOREIGN KEY (PositionID) REFERENCES Position(PositionID)
+    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID)
 );
 
 -- Tạo bảng Group
-CREATE TABLE IF NOT EXISTS Group (
+CREATE TABLE IF NOT EXISTS `Group` (
     GroupID INT AUTO_INCREMENT PRIMARY KEY,
     GroupName VARCHAR(255) NOT NULL,
     CreatorID INT,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS GroupAccount (
     GroupID INT,
     AccountID INT,
     JoinDate DATE,
-    FOREIGN KEY (GroupID) REFERENCES Group(GroupID),
+    FOREIGN KEY (GroupID) REFERENCES `Group`(GroupID),
     FOREIGN KEY (AccountID) REFERENCES Account(AccountID)
 );
 
