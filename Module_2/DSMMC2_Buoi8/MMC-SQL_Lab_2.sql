@@ -1,241 +1,155 @@
--- Question 1: Tối ưu lại cấu trúc database
+-- Question 1 & Question 2: Tối ưu và thêm constraint vào các table
 
--- Tạo Database IF NOT EXISTS
+-- Tạo database Testing_System_Db;
+DROP DATABASE IF EXISTS Testing_System_Db;
 CREATE DATABASE IF NOT EXISTS Testing_System_Db;
-
--- Sử dụng Database
 USE Testing_System_Db;
 
--- Tạo bảng Department
-CREATE TABLE IF NOT EXISTS Department (
-    DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
-    DepartmentName VARCHAR(255) NOT NULL
+-- Tạo table Department
+DROP TABLE IF EXISTS `Department`;
+CREATE TABLE `Department`(
+	DepartmentID	INT AUTO_INCREMENT PRIMARY KEY,
+    DepartmentName	VARCHAR(255) NOT NULL
 );
 
--- Tạo bảng Position
-CREATE TABLE IF NOT EXISTS Position (
-    PositionID INT AUTO_INCREMENT PRIMARY KEY,
-    PositionName VARCHAR(255) NOT NULL
+-- Tạo table Position
+DROP TABLE IF EXISTS `Position`;
+CREATE TABLE `Position`(
+	PositionID		INT AUTO_INCREMENT PRIMARY KEY,
+    PositionName	VARCHAR(255) NOT NULL
 );
 
--- Tạo bảng Account
-CREATE TABLE IF NOT EXISTS Account (
-    AccountID INT AUTO_INCREMENT PRIMARY KEY,
-    Email VARCHAR(255) NOT NULL,
-    Username VARCHAR(255) NOT NULL,
-    FullName VARCHAR(255) NOT NULL,
-    DepartmentID INT,
-    PositionID INT,
-    CreateDate DATE,
-    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID)
+-- Tạo table Account
+DROP TABLE IF EXISTS `Account`;
+CREATE TABLE `Account`(
+	AccountID		INT AUTO_INCREMENT PRIMARY KEY,
+    Email 			VARCHAR(255) NOT NULL,
+    Username 		VARCHAR(255) NOT NULL,
+    FullName		VARCHAR(255) NOT NULL,
+    DepartmentID	INT,
+    PositionID		INT,
+    CreateDate		DATE,
+    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID),
+    FOREIGN KEY (DepartmentID) REFERENCES `Department`(DepartmentID)
 );
 
--- Tạo bảng Group
-CREATE TABLE IF NOT EXISTS `Group` (
-    GroupID INT AUTO_INCREMENT PRIMARY KEY,
-    GroupName VARCHAR(255) NOT NULL,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
+-- Tạo table Group
+DROP TABLE IF EXISTS `Group`;
+CREATE TABLE `Group`(
+	GroupID			INT	AUTO_INCREMENT PRIMARY KEY,
+    GroupName		VARCHAR(255) NOT NULL,
+    CreatorID		INT,
+    CreateDate		DATE,
+    FOREIGN KEY (CreatorID) REFERENCES `Account`(AccountID)
 );
 
--- Tạo bảng GroupAccount
-CREATE TABLE IF NOT EXISTS GroupAccount (
-    GroupID INT,
-    AccountID INT,
-    JoinDate DATE,
-    FOREIGN KEY (GroupID) REFERENCES `Group`(GroupID),
-    FOREIGN KEY (AccountID) REFERENCES Account(AccountID)
+-- Tạo table GroupAccount
+DROP TABLE IF EXISTS `GroupAccount`;
+CREATE TABLE `GroupAccount`(
+	GroupID			INT,
+    AccountID		INT,
+    JoinDate		DATE,
+	FOREIGN KEY (GroupID) REFERENCES `Group`(GroupID),
+    FOREIGN KEY (AccountID) REFERENCES `Account`(AccountID)
 );
 
--- Tạo bảng TypeQuestion
-CREATE TABLE IF NOT EXISTS TypeQuestion (
-    TypeID INT AUTO_INCREMENT PRIMARY KEY,
-    TypeName VARCHAR(255) NOT NULL
+-- Tạo table TypeQuestion
+DROP TABLE IF EXISTS `TypeQuestion`;
+CREATE TABLE `TypeQuestion`(
+	TypeID			INT AUTO_INCREMENT PRIMARY KEY,
+    TypeName		VARCHAR(255) NOT NULL
 );
 
--- Tạo bảng CategoryQuestion
-CREATE TABLE IF NOT EXISTS CategoryQuestion (
-    CategoryID INT AUTO_INCREMENT PRIMARY KEY,
-    CategoryName VARCHAR(255) NOT NULL
+-- Tạo table CategoryQuestion
+DROP TABLE IF EXISTS `CategoryQuestion`;
+CREATE TABLE `CategoryQuestion`(
+	CategoryID		INT AUTO_INCREMENT PRIMARY KEY,
+    CategoryName	VARCHAR(255) NOT NULL
 );
 
--- Tạo bảng Question
-CREATE TABLE IF NOT EXISTS Question (
-    QuestionID INT AUTO_INCREMENT PRIMARY KEY,
-    Content TEXT NOT NULL,
-    CategoryID INT,
-    TypeID INT,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID),
-    FOREIGN KEY (TypeID) REFERENCES TypeQuestion(TypeID),
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
+-- Tạo table Question 
+DROP TABLE IF EXISTS `Question`;
+CREATE TABLE `Question`(
+	QuestionID 		INT AUTO_INCREMENT PRIMARY KEY,
+    Content 		TEXT NOT NULL,
+    CategoryID		INT,
+    TypeID			INT,
+    CreatorID		INT,
+    CreateDate		DATE,
+    FOREIGN KEY (CategoryID) REFERENCES `CategoryQuestion`(CategoryID),
+    FOREIGN KEY (TypeID) REFERENCES `TypeQuestion`(TypeID),
+    FOREIGN KEY (CreatorID) REFERENCES `Account`(AccountID)
 );
 
--- Tạo bảng Answer
-CREATE TABLE IF NOT EXISTS Answer (
-    AnswerID INT AUTO_INCREMENT PRIMARY KEY,
-    Content TEXT NOT NULL,
-    QuestionID INT,
-    IsCorrect BOOLEAN,
-    FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID)
+-- Tạo table Answer
+DROP TABLE IF EXISTS `Answer`;
+CREATE TABLE `Answer`(
+	AnswerID		INT AUTO_INCREMENT PRIMARY KEY,
+    Content			VARCHAR(255),
+    QuestionID		INT,
+    isCorrect		BOOLEAN,
+	FOREIGN KEY (QuestionID) REFERENCES `Question`(QuestionID)
 );
 
--- Tạo bảng Exam
-CREATE TABLE IF NOT EXISTS Exam (
-    ExamID INT AUTO_INCREMENT PRIMARY KEY,
-    Code VARCHAR(255) NOT NULL,
-    Title VARCHAR(255) NOT NULL,
-    CategoryID INT,
-    Duration INT,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID),
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
+-- Tạo table Exam
+DROP TABLE IF EXISTS `Exam`;
+CREATE TABLE `Exam`(
+	ExamID			INT AUTO_INCREMENT PRIMARY KEY,
+    Code			VARCHAR(255),
+    Title			VARCHAR(255),
+    CategoryID		INT,
+    Duration		DATE,
+    CreatorID		INT,
+    CreateDate		DATE,
+    FOREIGN KEY (CategoryID) REFERENCES `CategoryQuestion`(CategoryID),
+    FOREIGN KEY (CreatorID) REFERENCES `Account`(AccountID)
 );
 
--- Tạo bảng ExamQuestion
-CREATE TABLE IF NOT EXISTS ExamQuestion (
-    ExamID INT,
-    QuestionID INT,
-    FOREIGN KEY (ExamID) REFERENCES Exam(ExamID),
-    FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID)
+-- Tạo table ExamQuestion
+DROP TABLE IF EXISTS `ExamQuestion`;
+CREATE TABLE `ExamQuestion`(
+	ExamID			INT,
+    QuestionID		INT,
+    FOREIGN KEY (ExamID) REFERENCES `Exam`(ExamID),
+    FOREIGN KEY (QuestionID) REFERENCES `Question`(QuestionID)
 );
-
--- Question 2: Thêm ràng buộc vào các database
-
--- Tạo Database IF NOT EXISTS
-CREATE DATABASE IF NOT EXISTS Testing_System_Db;
-
--- Sử dụng Database
-USE Testing_System_Db;
-
--- Tạo bảng Department
-CREATE TABLE IF NOT EXISTS Department (
-    DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
-    DepartmentName VARCHAR(255) NOT NULL
-);
-
--- Tạo bảng Position
-CREATE TABLE IF NOT EXISTS Position (
-    PositionID INT AUTO_INCREMENT PRIMARY KEY,
-    PositionName VARCHAR(255) NOT NULL
-);
-
--- Tạo bảng Account
-CREATE TABLE IF NOT EXISTS Account (
-    AccountID INT AUTO_INCREMENT PRIMARY KEY,
-    Email VARCHAR(255) NOT NULL,
-    Username VARCHAR(255) NOT NULL,
-    FullName VARCHAR(255) NOT NULL,
-    DepartmentID INT,
-    PositionID INT,
-    CreateDate DATE,
-    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-    FOREIGN KEY (PositionID) REFERENCES `Position`(PositionID)
-);
-
--- Tạo bảng Group
-CREATE TABLE IF NOT EXISTS `Group` (
-    GroupID INT AUTO_INCREMENT PRIMARY KEY,
-    GroupName VARCHAR(255) NOT NULL,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
-);
-
--- Tạo bảng GroupAccount
-CREATE TABLE IF NOT EXISTS GroupAccount (
-    GroupID INT,
-    AccountID INT,
-    JoinDate DATE,
-    FOREIGN KEY (GroupID) REFERENCES `Group`(GroupID),
-    FOREIGN KEY (AccountID) REFERENCES Account(AccountID),
-    PRIMARY KEY (GroupID, AccountID) -- Thêm primary key cho bảng GroupAccount
-);
-
--- Tạo bảng TypeQuestion
-CREATE TABLE IF NOT EXISTS TypeQuestion (
-    TypeID INT AUTO_INCREMENT PRIMARY KEY,
-    TypeName VARCHAR(255) NOT NULL
-);
-
--- Tạo bảng CategoryQuestion
-CREATE TABLE IF NOT EXISTS CategoryQuestion (
-    CategoryID INT AUTO_INCREMENT PRIMARY KEY,
-    CategoryName VARCHAR(255) NOT NULL
-);
-
--- Tạo bảng Question
-CREATE TABLE IF NOT EXISTS Question (
-    QuestionID INT AUTO_INCREMENT PRIMARY KEY,
-    Content TEXT NOT NULL,
-    CategoryID INT,
-    TypeID INT,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID),
-    FOREIGN KEY (TypeID) REFERENCES TypeQuestion(TypeID),
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
-);
-
--- Tạo bảng Answer
-CREATE TABLE IF NOT EXISTS Answer (
-    AnswerID INT AUTO_INCREMENT PRIMARY KEY,
-    Content TEXT NOT NULL,
-    QuestionID INT,
-    IsCorrect BOOLEAN,
-    FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID)
-);
-
--- Tạo bảng Exam
-CREATE TABLE IF NOT EXISTS Exam (
-    ExamID INT AUTO_INCREMENT PRIMARY KEY,
-    Code VARCHAR(255) NOT NULL,
-    Title VARCHAR(255) NOT NULL,
-    CategoryID INT,
-    Duration INT,
-    CreatorID INT,
-    CreateDate DATE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID),
-    FOREIGN KEY (CreatorID) REFERENCES Account(AccountID)
-);
-
--- Tạo bảng ExamQuestion
-CREATE TABLE IF NOT EXISTS ExamQuestion (
-    ExamID INT,
-    QuestionID INT,
-    FOREIGN KEY (ExamID) REFERENCES Exam(ExamID),
-    FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID),
-    PRIMARY KEY (ExamID, QuestionID) -- Thêm primary key cho bảng ExamQuestion
-);
-
 
 -- Question 3: 
-
 -- Chèn dữ liệu vào bảng Department
-INSERT INTO Department(DepartmentID, DepartmentName)
+INSERT INTO `Department`(DepartmentName	)
 VALUES 
-(1, N'Marketing'),
-(2, N'Sale'),
-(3, N'Bảo vệ'),
-(4, N'Nhân sự'),
-(5, N'Kỹ thuật'),
-(6, N'Tài chính'),
-(7, N'Phó giám đốc'),
-(8, N'Giám đốc'),
-(9, N'Thư ký'),
-(10, N'Bán hàng');
+						('Marketing'	),
+						('Sale'			),
+						('Bảo vệ'		),
+						('Nhân sự'		),
+						('Kỹ thuật'		),
+						('Tài chính'	),
+						('Phó giám đốc'	),
+						('Giám đốc'		),
+						('Thư ký'		),
+						('Bán hàng'		);
 
 -- Chèn dữ liệu vào bảng Position
-INSERT INTO `Position`(PositionID, PositionName)
+INSERT INTO `Position`(PositionName	)
 VALUES 
-(1, N'Dev'),
-(2, N'Test'),
-(3, N'Scrum Master'),
-(4, N'PM');
+					('Dev'			),
+					('Test'			),
+					('Scrum Master'	),
+					('PM'			);
+
+-- Chèn dữ liệu vào bảng Account
+INSERT INTO `Account`(Email				 ,  Username  , FullName     , DepartmentID, PositionID, CreateDate)
+VALUES 
+					('email1@example.com', 'username1', 'Full Name 1', 1           , 1         , '2024-05-05'),
+					('email2@example.com', 'username2', 'Full Name 2', 2		   , 2         , '2024-05-05'),
+					('email3@example.com', 'username3', 'Full Name 3', 3           , 3         , '2024-05-05'),
+					('email4@example.com', 'username4', 'Full Name 4', 4           , 4         , '2024-05-05'),
+					('email5@example.com', 'username5', 'Full Name 5', 5           , 1         , '2024-05-05'),
+					('dapphatchetngay@gmail.com'		, 'khabanh'			,'Ngo Ba Kha'			,   '6'			,   '3'		,'2020-04-05'),
+                    ('songcodaoly@gmail.com'			, 'huanhoahong'		,'Bui Xuan Huan'		,   '7'			,   '2'		, NULL		),
+                    ('sontungmtp@gmail.com'				, 'tungnui'			,'Nguyen Thanh Tung'	,   '8'			,   '1'		,'2020-04-07'),
+                    ('duongghuu@gmail.com'				, 'duongghuu'		,'Duong Van Huu'		,   '9'			,   '2'		,'2020-04-07'),
+                    ('vtiaccademy@gmail.com'			, 'vtiaccademy'		,'Vi Ti Ai'				,   '10'		,   '1'		,'2020-04-09');
 
 -- Chèn dữ liệu vào bảng CategoryQuestion
 INSERT INTO CategoryQuestion(CategoryID, CategoryName)
@@ -245,15 +159,6 @@ VALUES
 (3, N'SQL'),
 (4, N'Postman'),
 (5, N'Ruby');
-
--- Chèn dữ liệu vào bảng Account
-INSERT INTO Account(Email, Username, FullName, DepartmentID, PositionID, CreateDate)
-VALUES 
-('email1@example.com', 'username1', 'Full Name 1', 1, 1, '2024-05-05'),
-('email2@example.com', 'username2', 'Full Name 2', 2, 2, '2024-05-05'),
-('email3@example.com', 'username3', 'Full Name 3', 3, 3, '2024-05-05'),
-('email4@example.com', 'username4', 'Full Name 4', 4, 4, '2024-05-05'),
-('email5@example.com', 'username5', 'Full Name 5', 5, 1, '2024-05-05');
 
 -- Chèn dữ liệu vào bảng Group
 INSERT INTO `Group`(GroupName, CreatorID, CreateDate)
@@ -314,5 +219,3 @@ VALUES
 (3, 3),
 (4, 4),
 (5, 5);
-
-
